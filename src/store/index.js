@@ -13,7 +13,7 @@ export default new Vuex.Store({
   mutations: {
   },
   modules: {
-    activities
+    activities:
   },
   strict: debug
 })
