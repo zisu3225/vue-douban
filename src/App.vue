@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <router-view class="view"></router-view>
-    <router-view class="view" name="subject"></router-view>
-    <router-view class="view" name="search"></router-view>
+    <!--<router-view class="view" name="subject"></router-view>
+    <router-view class="view" name="search"></router-view>-->
   </div>
 </template>
 
@@ -10,13 +10,20 @@
 import Vue from 'vue'
 import 'normalize.css'
 import ElementUI from 'element-ui'
-import '@/assets/theme/src/index.scss'
+import '@/assets/theme/index.css'
 import store from '@/store'
+import VueLazyLoad from 'vue-lazyload'
+
+Vue.use(VueLazyLoad, {
+  loading: '../static/lazyload.gif'
+})
 
 Vue.use(ElementUI)
 export default {
   name: 'App',
-  store
+  store,
+  beforeMount () {
+  }
 }
 </script>
 
@@ -33,7 +40,7 @@ html {
 }
 
 .has-header {
-  margin-top: 4.8rem;
+  // margin-top: 4.8rem;
 }
 
 h2 {

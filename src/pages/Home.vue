@@ -1,27 +1,35 @@
 <template>
   <div class="home">
-    <nav-bar style="margin-bottom: 20px;"></nav-bar>
-    <list v-for="(item, key) in events" :key="key" :event-item="item"></list>
-    <infinite-loading @infinite="onInfinite" ref="infiniteLoading">
-      <img src="../assets/image/loading_green.gif" alt="loading">
+    <nav-bar style="margin-bottom: 20px;margin-top: 20px;"></nav-bar>
+    <list v-for="(item, key) in events" :key="key" :event-item="item" mode="thumbnail"></list>
+    <infinite-loading @infinite="onInfinite">
+      <loading slot="spinner"></loading>
     </infinite-loading>
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/NavBar'
+import Loading from '@/components/Loading'
 import List from '@/components/List'
-// import {getEventList} from '@/lib/api'
 import InfiniteLoading from 'vue-infinite-loading'
 import {GET_EVENT_LIST} from '@/store/actions'
 import {mapState} from 'vuex'
+import {errorMixins} from '@/lib/mixin'
 export default {
-  layout: 'default',
+  mixins: [
+    errorMixins
+  ],
   name: 'Home',
   components: {
     [NavBar.name]: NavBar,
     [InfiniteLoading.name]: InfiniteLoading,
-    [List.name]: List
+    [List.name]: List,
+    [Loading.name]: Loading
+  },
+  data () {
+    return {
+    }
   },
   computed: {
     ...mapState({
@@ -29,17 +37,15 @@ export default {
     })
   },
   methods: {
-    async onInfinite () {
-      try {
+    onInfinite ($state) {
+      setTimeout(() => {
         this.$store.dispatch(GET_EVENT_LIST)
-        // this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
-      } catch (err) {
-        console.log(err)
-      }
+        $state.loaded()
+      }, 1000)
     }
   },
   async mounted () {
-    this.$store.dispatch(GET_EVENT_LIST)
+    // await this.$store.dispatch(GET_EVENT_LIST)
   }
 }
 </script>

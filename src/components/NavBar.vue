@@ -5,7 +5,7 @@
         <router-link to="/movie">影院热映</router-link>
       </el-col>
       <el-col :span="12">
-        <router-link to="/music">欧美新碟榜</router-link>
+        <router-link to="/radio">欧美新碟榜</router-link>
       </el-col>
     </el-row>
     <el-row type="flex">
@@ -35,6 +35,9 @@ export default {
     a{
       color: #494949;
       font-size: 1.6rem;
+    }
+    a:hover{
+      color: $--color-primary;
     }
   }
 }
