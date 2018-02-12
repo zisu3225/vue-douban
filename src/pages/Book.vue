@@ -1,8 +1,8 @@
 <template>
   <div class="movie-view has-header">
-    <scroller title="最受关注图书｜虚构类" type="hasCover" :items="novelBooks" v-loading="loading"></scroller>
-    <scroller title="最受关注图书｜非虚构类" type="hasCover" :items="realityBooks" v-loading="loading"></scroller>
-    <scroller title="豆瓣纸书" type="hasCover" :items="travelBooks" v-loading="loading">
+    <scroller title="最受关注图书｜虚构类" type="hasCover" :items="novelBooks" v-loading="novelLoading"></scroller>
+    <scroller title="最受关注图书｜非虚构类" type="hasCover" :items="realityBooks" v-loading="realityLoading"></scroller>
+    <scroller title="豆瓣纸书" type="hasCover" :items="travelBooks" v-loading="travelLoading">
       <div class="promItem" slot="promItem">
         <img class="corver" src="../assets/image/book_zw.jpg" alt="">
         <div class="content">
@@ -22,7 +22,7 @@ import Scroller from '@/components/Scroller'
 import Types from '@/components/Types'
 import DownloadApp from '@/components/DownloadApp'
 import {mapState} from 'vuex'
-import {GET_BOOKS} from '@/store/actions'
+import {GET_NOVEL_BOOKS, GET_REALITY_BOOKS, GET_TRAVEL_BOOKS} from '@/store/actions'
 export default {
   name: 'Book',
   components: {
@@ -74,11 +74,15 @@ export default {
       novelBooks: state => state.books.novelBooks,
       realityBooks: state => state.books.realityBooks,
       travelBooks: state => state.books.travelBooks,
-      loading: state => state.books.loading
+      novelLoading: state => state.books.novelLoading,
+      realityLoading: state => state.books.realityLoading,
+      travelLoading: state => state.books.travelLoading
     })
   },
   beforeMount () {
-    this.$store.dispatch(GET_BOOKS)
+    this.$store.dispatch(GET_NOVEL_BOOKS)
+    this.$store.dispatch(GET_REALITY_BOOKS)
+    this.$store.dispatch(GET_TRAVEL_BOOKS)
   }
 }
 </script>

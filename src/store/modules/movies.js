@@ -1,49 +1,60 @@
-import {GET_MOVIES} from '@/store/actions'
+import {GET_HOT_MOVIES, GET_NEW_MOVIES, GET_TOP_MOVIES, createAsyncAction} from '@/store/actions'
 import {getHotMovies, getNewMovies, getTopMovies} from '@/lib/api'
-// import * as Util from '@/lib/util'
 
 const state = {
   hotMovies: [],
   newMovies: [],
   topMovies: [],
-  loading: false
+  hotLoading: false,
+  newLoading: false,
+  topLoading: false
 }
 
 const actions = {
-  async [GET_MOVIES] ({commit, state}) {
-    try {
-      commit({
-        type: `${GET_MOVIES}_PENDING`
-      })
-      let resHotMovies = await getHotMovies()
-      let resNewMovies = await getNewMovies()
-      let resTopMovies = await getTopMovies()
-      commit({
-        type: `${GET_MOVIES}_FULFILLED`,
-        hotMovies: resHotMovies.data.subjects,
-        newMovies: resNewMovies.data.subjects,
-        topMovies: resTopMovies.data.subjects
-      })
-    } catch (err) {
-      commit({
-        type: `${GET_MOVIES}_REJECTED`
-      })
-    }
-  }
+  [GET_HOT_MOVIES]: createAsyncAction(GET_HOT_MOVIES, async ({commit, state}) => {
+    let res = await getHotMovies()
+    return res
+  }),
+  [GET_NEW_MOVIES]: createAsyncAction(GET_NEW_MOVIES, async ({commit, state}) => {
+    let res = await getNewMovies()
+    return res
+  }),
+  [GET_TOP_MOVIES]: createAsyncAction(GET_TOP_MOVIES, async ({commit, state}) => {
+    let res = await getTopMovies()
+    return res
+  })
 }
 
 const mutations = {
-  [`${GET_MOVIES}_PENDING`] (state) {
-    state.loading = true
+  [`${GET_HOT_MOVIES}_PENDING`] (state) {
+    state.hotLoading = true
   },
-  [`${GET_MOVIES}_FULFILLED`] (state, payload) {
-    state.loading = false
-    state.hotMovies = payload.hotMovies
-    state.newMovies = payload.newMovies
-    state.topMovies = payload.topMovies
+  [`${GET_HOT_MOVIES}_FULFILLED`] (state, payload) {
+    state.hotLoading = false
+    state.hotMovies = payload.data.subjects
   },
-  [`${GET_MOVIES}_REJECTED`] (state) {
-    state.loading = false
+  [`${GET_HOT_MOVIES}_REJECTED`] (state) {
+    state.hotLoading = false
+  },
+  [`${GET_NEW_MOVIES}_PENDING`] (state) {
+    state.newLoading = true
+  },
+  [`${GET_NEW_MOVIES}_FULFILLED`] (state, payload) {
+    state.newLoading = false
+    state.newMovies = payload.data.subjects
+  },
+  [`${GET_NEW_MOVIES}_REJECTED`] (state) {
+    state.newLoading = false
+  },
+  [`${GET_TOP_MOVIES}_PENDING`] (state) {
+    state.topLoading = true
+  },
+  [`${GET_TOP_MOVIES}_FULFILLED`] (state, payload) {
+    state.topLoading = false
+    state.topMovies = payload.data.subjects
+  },
+  [`${GET_TOP_MOVIES}_REJECTED`] (state) {
+    state.topLoading = false
   }
 }
 export default {

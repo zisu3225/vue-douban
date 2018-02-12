@@ -1,8 +1,8 @@
 <template>
   <div class="movie-view has-header">
-    <scroller title="影院热映" type="hasCover" :items="hotMovies" v-loading="loading" height="275px"></scroller>
-    <scroller title="免费在线观影" type="hasCover" :items="topMovies" v-loading="loading"></scroller>
-    <scroller title="新片速递" type="hasCover" :items="newMovies" v-loading="loading"></scroller>
+    <scroller title="影院热映" type="hasCover" :items="hotMovies" v-loading="hotLoading" height="275px"></scroller>
+    <scroller title="免费在线观影" type="hasCover" :items="topMovies" v-loading="newLoading"></scroller>
+    <scroller title="新片速递" type="hasCover" :items="newMovies" v-loading="topLoading"></scroller>
     <scroller title="发现好电影" type="onlyString" :items="movieTags"></scroller>
     <types></types>
     <download-app></download-app>
@@ -13,7 +13,7 @@ import {mapState} from 'vuex'
 import Scroller from '@/components/Scroller'
 import Types from '@/components/Types'
 import DownloadApp from '@/components/DownloadApp'
-import {GET_MOVIES} from '@/store/actions'
+import {GET_HOT_MOVIES, GET_NEW_MOVIES, GET_TOP_MOVIES} from '@/store/actions'
 export default {
   name: 'Movie',
   components: {
@@ -75,11 +75,15 @@ export default {
       hotMovies: state => state.movies.hotMovies,
       topMovies: state => state.movies.topMovies,
       newMovies: state => state.movies.newMovies,
-      loading: state => state.movies.loading
+      hotLoading: state => state.movies.hotLoading,
+      newLoading: state => state.movies.newLoading,
+      topLoading: state => state.movies.topLoading
     })
   },
   beforeMount () {
-    this.$store.dispatch(GET_MOVIES)
+    this.$store.dispatch(GET_HOT_MOVIES)
+    this.$store.dispatch(GET_NEW_MOVIES)
+    this.$store.dispatch(GET_TOP_MOVIES)
   }
 }
 </script>

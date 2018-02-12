@@ -1,5 +1,5 @@
 import {getMoviesByKey} from '@/lib/api'
-import {SEARCH_BY_KEY} from '@/store/actions'
+import {SEARCH_BY_KEY, createAsyncAction} from '@/store/actions'
 // import * as Util from '@/lib/util'
 
 const state = {
@@ -8,22 +8,10 @@ const state = {
 }
 
 const actions = {
-  async [SEARCH_BY_KEY] ({commit, state}, {query}) {
-    try {
-      commit({
-        type: `${SEARCH_BY_KEY}_PENDING`
-      })
-      let resKeyMovies = await getMoviesByKey(query)
-      commit({
-        type: `${SEARCH_BY_KEY}_FULFILLED`,
-        keyMovies: resKeyMovies.data.subjects
-      })
-    } catch (err) {
-      commit({
-        type: `${SEARCH_BY_KEY}_REJECTED`
-      })
-    }
-  }
+  [SEARCH_BY_KEY]: createAsyncAction(SEARCH_BY_KEY, async ({commit, state}, {query}) => {
+    let res = await getMoviesByKey(query)
+    return res
+  })
 }
 
 const mutations = {
@@ -32,7 +20,7 @@ const mutations = {
   },
   [`${SEARCH_BY_KEY}_FULFILLED`] (state, payload) {
     state.loading = false
-    state.keyMovies = payload.keyMovies
+    state.keyMovies = payload.data.subjects
   },
   [`${SEARCH_BY_KEY}_REJECTED`] (state) {
     state.loading = false

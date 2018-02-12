@@ -1,5 +1,4 @@
 import {GET_GROUPS} from '@/store/actions'
-// import * as Util from '@/lib/util'
 
 const state = {
   groupA: [],
